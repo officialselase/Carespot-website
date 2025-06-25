@@ -4,24 +4,29 @@ import React, { useState } from "react";
 
 const Menu = ({ navigateTo }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isWhoWeAreDropdownOpen, setIsWhoWeAreDropdownOpen] = useState(false); // New state for desktop dropdown
 
   const handleNavLinkClick = (page) => {
     navigateTo(page);
     setIsMobileMenuOpen(false); // Close mobile menu after navigation
+    setIsWhoWeAreDropdownOpen(false); // Close desktop dropdown after navigation
   };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        {/* Logo */}
-        <div className="flex items-center">
+        {/* Logo - Navigates to Home */}
+        <button
+          onClick={() => handleNavLinkClick("Home")}
+          className="flex items-center focus:outline-none"
+        >
           <img
-            src="Carespot logo - IG.jpg"
+            src="/Carespot logo - IG -.jpg"
             alt="Carespot Logo"
             className="h-12 mr-3 rounded-full"
           />
           <span className="text-2xl font-bold text-blue-600">CareSpot</span>
-        </div>
+        </button>
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-6">
@@ -31,37 +36,60 @@ const Menu = ({ navigateTo }) => {
           >
             Home
           </button>
+
+          {/* Who We Are Dropdown - Modified */}
           <div className="relative group">
-            <button className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300 focus:outline-none">
-              Who We Are <span className="ml-1">&#9662;</span>
+            <button
+              onClick={() => handleNavLinkClick("About")} // Main "Who We Are" button navigates to AboutPage
+              onMouseEnter={() => setIsWhoWeAreDropdownOpen(true)} // Open dropdown on hover
+              onMouseLeave={() => setIsWhoWeAreDropdownOpen(false)} // Close dropdown on mouse leave
+              className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300 focus:outline-none flex items-center"
+            >
+              Who We Are
+              <svg
+                className={`ml-1 h-4 w-4 transform transition-transform duration-200 ${
+                  isWhoWeAreDropdownOpen ? "rotate-180" : "rotate-0"
+                }`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
             </button>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-48 py-2 z-10">
-              <button
-                onClick={() => handleNavLinkClick("About")}
-                className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+            {isWhoWeAreDropdownOpen && ( // Render dropdown only if open
+              <div
+                className="absolute bg-white shadow-lg rounded-md mt-2 w-48 py-2 z-10"
+                onMouseEnter={() => setIsWhoWeAreDropdownOpen(true)} // Keep open if mouse moves to dropdown
+                onMouseLeave={() => setIsWhoWeAreDropdownOpen(false)} // Close if mouse leaves dropdown
               >
-                About Us
-              </button>
-              {/* Assuming Mission & Vision is a section within About, or a sub-page */}
-              <button
-                onClick={() => handleNavLinkClick("About")}
-                className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
-              >
-                Mission & Vision
-              </button>
-            </div>
+                {/* Only CareSpot – Ghana in dropdown */}
+                <button
+                  onClick={() => handleNavLinkClick("CareSpotGhana")}
+                  className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100"
+                >
+                  CareSpot – Ghana
+                </button>
+              </div>
+            )}
           </div>
-          <button
-            onClick={() => handleNavLinkClick("CareSpotGhana")}
-            className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300"
-          >
-            CareSpot – Ghana
-          </button>
+
           <button
             onClick={() => handleNavLinkClick("Projects")}
             className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300"
           >
             Projects
+          </button>
+          <button
+            onClick={() => handleNavLinkClick("Contact")}
+            className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300"
+          >
+            Contact Us
           </button>
           <button
             onClick={() => handleNavLinkClick("Donate")}
@@ -114,6 +142,7 @@ const Menu = ({ navigateTo }) => {
             >
               Home
             </button>
+            {/* Mobile Who We Are - Modified */}
             <button
               onClick={() => handleNavLinkClick("About")}
               className="block text-gray-800 hover:text-blue-600 font-medium"
@@ -122,15 +151,23 @@ const Menu = ({ navigateTo }) => {
             </button>
             <button
               onClick={() => handleNavLinkClick("CareSpotGhana")}
-              className="block text-gray-800 hover:text-blue-600 font-medium"
+              className="block text-gray-800 hover:text-blue-600 pl-8 font-medium"
             >
-              CareSpot – Ghana
-            </button>
+              {" "}
+              &mdash; CareSpot – Ghana
+            </button>{" "}
+            {/* Indent for sub-item clarity */}
             <button
               onClick={() => handleNavLinkClick("Projects")}
               className="block text-gray-800 hover:text-blue-600 font-medium"
             >
               Projects
+            </button>
+            <button
+              onClick={() => handleNavLinkClick("Contact")}
+              className="block text-gray-800 hover:text-blue-600 font-medium"
+            >
+              Contact Us
             </button>
             <button
               onClick={() => handleNavLinkClick("Donate")}
