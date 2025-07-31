@@ -1,12 +1,12 @@
 // src/App.jsx
 
 import React, { useState } from "react";
-import Menu from "./components/Menu"; // Import the Menu component
-import HomePage from "./pages/HomePage"; // Import the HomePage component
-import AboutPage from "./pages/AboutPage"; // Import the AboutPage component
-import ProjectsPage from "./pages/ProjectsPage"; // Import the ProjectsPage component
-import CareSpotGhanaPage from "./pages/CareSpotGhanaPage";
-import ContactPage from "./pages/ContactPage"; // Import the new ContactPage
+import Menu from "./components/Menu."; // Import the Menu component
+import HomePage from "./pages/HomePage.jsx"; // Import the HomePage component
+import AboutPage from "./pages/AboutPage.jsx"; // Import the AboutPage component
+import ProjectsPage from "./pages/ProjectsPage.jsx"; // Import the ProjectsPage component
+import CareSpotGhanaPage from "./pages/CareSpotGhanaPage.jsx";
+import ContactPage from "./pages/ContactPage.jsx"; // Import the new ContactPage
 
 const App = () => {
   // State to manage the current active page
