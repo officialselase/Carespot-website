@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Menu from "./components/Menu"; // Import the Menu component
-import HomePage from "./pages/Homepage"; // Import the HomePage component
+import HomePage from "./pages/HomePage"; // Import the HomePage component
 import AboutPage from "./pages/AboutPage"; // Import the AboutPage component
 import ProjectsPage from "./pages/ProjectsPage"; // Import the ProjectsPage component
 import CareSpotGhanaPage from "./pages/CareSpotGhanaPage";
@@ -33,19 +33,40 @@ const App = () => {
       case "Contact":
         return <ContactPage />; // Render the dedicated ContactPage
       case "Donate":
-        // If 'Donate' is a separate page, render it here.
-        // For now, let's treat it as a separate placeholder page.
+        // Donate page with a consistent hero section
         return (
-          <div className="min-h-screen pt-20 flex items-center justify-center bg-gray-100">
-            <div className="text-center p-8 bg-white shadow-lg rounded-lg">
-              <h1 className="text-4xl font-bold text-rose-600 mb-4">
-                Support Our Cause
-              </h1>
-              <p className="text-gray-700 text-lg">
-                Thank you for your interest in donating! This will be our
-                dedicated donation page.
-              </p>
-              {/* Add your donation form/details here */}
+          <div className="min-h-screen pt-20 flex flex-col bg-gray-50">
+            {/* Hero Section for Donate Page */}
+            <section
+              className="relative py-24 bg-cover bg-center text-white flex items-center justify-center"
+              style={{
+                backgroundImage: "url('/sedi.jpeg')", // Consistent image
+              }}
+            >
+              <div className="absolute inset-0 bg-rose-900 opacity-70 z-0"></div>{" "}
+              {/* Dark rose overlay */}
+              <div className="relative z-10 text-center px-4">
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
+                  Support Our Cause
+                </h1>
+                <p className="text-lg md:text-xl max-w-2xl mx-auto">
+                  Your generous contribution helps us continue our vital work in
+                  empowering children and transforming communities.
+                </p>
+              </div>
+            </section>
+
+            {/* Main Content Area for Donate */}
+            <div className="container mx-auto px-4 py-16 text-center">
+              <div className="p-8 bg-white shadow-lg rounded-lg max-w-3xl mx-auto">
+                <p className="text-xl text-gray-700 mb-10">
+                  Every donation, big or small, makes a significant difference.
+                </p>
+                <button className="bg-rose-600 text-white px-10 py-5 rounded-full text-2xl font-bold hover:bg-rose-700 transition-colors duration-300 shadow-xl transform hover:scale-105">
+                  Donate Now
+                </button>
+                {/* Add more donation form/details here */}
+              </div>
             </div>
           </div>
         );
@@ -69,7 +90,7 @@ const App = () => {
           <div>
             <div className="flex items-center mb-4">
               <img
-                src="/Carespot logo - IG -.jpg"
+                src="/Carespot logo - IG -.jpg" // Corrected image path as per your provided code
                 alt="Carespot Logo"
                 className="h-12 mr-3 rounded-full"
               />
@@ -168,10 +189,10 @@ const App = () => {
               Get in touch
             </h3>
             <ul className="space-y-2 text-gray-600">
-              <li>Kwashiebu, Snowdrop St.</li>
-              <li>Accra-Ghana</li>
-              <li>+233 50 154 4087</li>
-              <li>+233 55 902 2161</li>
+              <li>Oak Villa Estate, House number 41</li>
+              <li>Abokobi-Accra, Ghana</li>
+              <li>+1 (814) 417-1575</li>
+              <li>+233 53 457 5833</li>
               <li>carespotinitiative@gmail.com</li>
             </ul>
           </div>

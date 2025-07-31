@@ -1,15 +1,33 @@
 // src/components/Menu.jsx
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react"; // Import useRef
 
 const Menu = ({ navigateTo }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isWhoWeAreDropdownOpen, setIsWhoWeAreDropdownOpen] = useState(false); // New state for desktop dropdown
+  const [isWhoWeAreDropdownOpen, setIsWhoWeAreDropdownOpen] = useState(false);
+  const dropdownTimeoutRef = useRef(null); // Ref to store the timeout ID
 
   const handleNavLinkClick = (page) => {
     navigateTo(page);
     setIsMobileMenuOpen(false); // Close mobile menu after navigation
     setIsWhoWeAreDropdownOpen(false); // Close desktop dropdown after navigation
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current); // Clear any pending close timeouts
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current); // Clear any pending close timeouts
+    }
+    setIsWhoWeAreDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    // Set a timeout to close the dropdown after a short delay
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setIsWhoWeAreDropdownOpen(false);
+    }, 200); // 200ms delay
   };
 
   return (
@@ -21,9 +39,9 @@ const Menu = ({ navigateTo }) => {
           className="flex items-center focus:outline-none"
         >
           <img
-            src="/Carespot logo - IG -.jpg"
+            src="/logo1.png"
             alt="Carespot Logo"
-            className="h-12 mr-3 rounded-full"
+            className="h-16 mr-3 rounded-full"
           />
           <span className="text-2xl font-bold text-blue-600">CareSpot</span>
         </button>
@@ -37,12 +55,14 @@ const Menu = ({ navigateTo }) => {
             Home
           </button>
 
-          {/* Who We Are Dropdown - Modified */}
-          <div className="relative group">
+          {/* Who We Are Dropdown - Modified for better reactivity */}
+          <div
+            className="relative group"
+            onMouseEnter={handleMouseEnter} // Use new handler
+            onMouseLeave={handleMouseLeave} // Use new handler
+          >
             <button
               onClick={() => handleNavLinkClick("About")} // Main "Who We Are" button navigates to AboutPage
-              onMouseEnter={() => setIsWhoWeAreDropdownOpen(true)} // Open dropdown on hover
-              onMouseLeave={() => setIsWhoWeAreDropdownOpen(false)} // Close dropdown on mouse leave
               className="text-gray-600 hover:text-blue-600 font-medium transition-colors duration-300 focus:outline-none flex items-center"
             >
               Who We Are
@@ -63,11 +83,7 @@ const Menu = ({ navigateTo }) => {
               </svg>
             </button>
             {isWhoWeAreDropdownOpen && ( // Render dropdown only if open
-              <div
-                className="absolute bg-white shadow-lg rounded-md mt-2 w-48 py-2 z-10"
-                onMouseEnter={() => setIsWhoWeAreDropdownOpen(true)} // Keep open if mouse moves to dropdown
-                onMouseLeave={() => setIsWhoWeAreDropdownOpen(false)} // Close if mouse leaves dropdown
-              >
+              <div className="absolute bg-white shadow-lg rounded-md mt-2 w-48 py-2 z-10">
                 {/* Only CareSpot – Ghana in dropdown */}
                 <button
                   onClick={() => handleNavLinkClick("CareSpotGhana")}
