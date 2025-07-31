@@ -1,7 +1,7 @@
 // src/App.jsx
 
 import React, { useState } from "react";
-import Menu from "./components/Menu."; // Import the Menu component
+import Menu from "./components/Menu.jsx"; // Import the Menu component
 import HomePage from "./pages/HomePage.jsx"; // Import the HomePage component
 import AboutPage from "./pages/AboutPage.jsx"; // Import the AboutPage component
 import ProjectsPage from "./pages/ProjectsPage.jsx"; // Import the ProjectsPage component
