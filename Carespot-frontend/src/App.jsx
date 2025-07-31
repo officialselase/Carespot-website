@@ -10,7 +10,7 @@ import ContactPage from "./pages/ContactPage.jsx"; // Import the new ContactPage
 
 const App = () => {
   // State to manage the current active page
-  const [currentPage, setCurrentPage] = useState("Home"); // Default to 'Home'
+  const [currentPage, setCurrentPage] = useState("Home"); // Default to 'HomePage'
 
   // Function to navigate to a different page
   const navigateTo = (pageName) => {
