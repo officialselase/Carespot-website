@@ -1,16 +1,16 @@
 // src/App.jsx
 
 import React, { useState } from "react";
-import Menu from "./components/Menu.jsx"; // Import the Menu component
-import HomePage from "./pages/HomePage.jsx"; // Import the HomePage component
-import AboutPage from "./pages/AboutPage.jsx"; // Import the AboutPage component
-import ProjectsPage from "./pages/ProjectsPage.jsx"; // Import the ProjectsPage component
-import CareSpotGhanaPage from "./pages/CareSpotGhanaPage.jsx";
-import ContactPage from "./pages/ContactPage.jsx"; // Import the new ContactPage
+import Menu from "./components/Menu.jsx"; // Ensure .jsx extension
+import HomePage from "./pages/HomePage.jsx"; // Ensure .jsx extension and correct casing
+import AboutPage from "./pages/AboutPage.jsx"; // Ensure .jsx extension and correct casing
+import ProjectsPage from "./pages/ProjectsPage.jsx"; // Ensure .jsx extension and correct casing
+import CareSpotGhanaPage from "./pages/CareSpotGhanaPage.jsx"; // Ensure .jsx extension and correct casing
+import ContactPage from "./pages/ContactPage.jsx"; // Ensure .jsx extension and correct casing
 
 const App = () => {
   // State to manage the current active page
-  const [currentPage, setCurrentPage] = useState("Home"); // Default to 'HomePage'
+  const [currentPage, setCurrentPage] = useState("Home"); // Default to 'Home'
 
   // Function to navigate to a different page
   const navigateTo = (pageName) => {
@@ -90,7 +90,7 @@ const App = () => {
           <div>
             <div className="flex items-center mb-4">
               <img
-                src="/Carespot logo - IG -.jpg" // Corrected image path as per your provided code
+                src="/Carespot logo - IG -.jpg"
                 alt="Carespot Logo"
                 className="h-12 mr-3 rounded-full"
               />
@@ -170,8 +170,7 @@ const App = () => {
                 >
                   Contact Us
                 </button>
-              </li>{" "}
-              {/* Added Contact Us link */}
+              </li>
               <li>
                 <button
                   onClick={() => navigateTo("Donate")}
