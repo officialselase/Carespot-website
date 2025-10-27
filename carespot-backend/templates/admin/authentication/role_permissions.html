@@ -1,0 +1,81 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label='authentication' %}">Authentication</a>
+    &rsaquo; <a href="{% url 'admin:authentication_customuser_changelist' %}">Users</a>
+    &rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <h1>{{ title }}</h1>
+    
+    <div class="help">
+        <p>This matrix shows what permissions each role has in the system. Permissions are organized by resource and action type.</p>
+    </div>
+    
+    {% for role_name, permissions in permissions_matrix.items %}
+    <div class="module" style="margin-bottom: 20px;">
+        <h2 style="background-color: #f8f9fa; padding: 10px; margin: 0; border-bottom: 1px solid #dee2e6;">
+            {{ role_name }}
+        </h2>
+        
+        {% if permissions %}
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background-color: #e9ecef;">
+                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Resource</th>
+                    <th style="padding: 8px; border: 1px solid #dee2e6; text-align: left;">Allowed Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource, actions in permissions.items %}
+                <tr>
+                    <td style="padding: 8px; border: 1px solid #dee2e6; font-weight: bold;">
+                        {{ resource|title|replace:"_":" " }}
+                    </td>
+                    <td style="padding: 8px; border: 1px solid #dee2e6;">
+                        {% for action in actions %}
+                        <span style="background-color: #d1ecf1; color: #0c5460; padding: 2px 6px; border-radius: 3px; margin-right: 4px; font-size: 12px;">
+                            {{ action|title }}
+                        </span>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div style="padding: 20px; text-align: center; color: #6c757d;">
+            No specific permissions defined for this role
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    
+    <div class="help" style="margin-top: 30px;">
+        <h3>Permission Actions Explained:</h3>
+        <ul>
+            <li><strong>Create:</strong> Can create new records</li>
+            <li><strong>Read:</strong> Can view and list records</li>
+            <li><strong>Update:</strong> Can modify existing records</li>
+            <li><strong>Delete:</strong> Can remove records</li>
+            <li><strong>Export:</strong> Can export data to files</li>
+        </ul>
+        
+        <h3>Special Capabilities:</h3>
+        <ul>
+            <li><strong>Admin Interface Access:</strong> Admin, Staff</li>
+            <li><strong>User Management:</strong> Admin, Staff (limited)</li>
+            <li><strong>System Settings:</strong> Admin only</li>
+            <li><strong>Audit Logs:</strong> Admin only</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

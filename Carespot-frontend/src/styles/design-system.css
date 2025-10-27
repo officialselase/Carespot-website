@@ -1,0 +1,90 @@
+/* CareSpot Design System */
+
+:root {
+  /* Legacy color variables for backward compatibility */
+  --carespot-primary: var(--color-primary-600);
+  --carespot-primary-dark: var(--color-primary-700);
+  --carespot-primary-light: var(--color-primary-200);
+  
+  --carespot-blue: var(--color-secondary-600);
+  --carespot-blue-dark: var(--color-secondary-700);
+  --carespot-blue-light: var(--color-secondary-100);
+  
+  --carespot-green: var(--color-success-600);
+  --carespot-orange: var(--color-warning-600);
+  --carespot-purple: #7c3aed; /* Violet-600 - Innovation, research */
+  
+  --carespot-gray-50: var(--color-neutral-50);
+  --carespot-gray-100: var(--color-neutral-100);
+  --carespot-gray-200: var(--color-neutral-200);
+  --carespot-gray-300: var(--color-neutral-300);
+  --carespot-gray-400: var(--color-neutral-400);
+  --carespot-gray-500: var(--color-neutral-500);
+  --carespot-gray-600: var(--color-neutral-600);
+  --carespot-gray-700: var(--color-neutral-700);
+  --carespot-gray-800: var(--color-neutral-800);
+  --carespot-gray-900: var(--color-neutral-900);
+  
+  /* Typography - Using new typography system variables */
+  --font-primary: var(--font-family-primary);
+  --font-heading: var(--font-family-heading);
+  
+  /* Spacing Scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+/* Utility Classes */
+.btn-primary {
+  @apply bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105;
+}
+
+.btn-secondary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105;
+}
+
+.btn-outline {
+  @apply border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-semibold py-3 px-6 rounded-full transition-all duration-300;
+}
+
+.card-elevated {
+  @apply bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1;
+}
+
+.section-padding {
+  @apply py-16 md:py-24;
+}
+
+.container-custom {
+  @apply container mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-r from-red-600 to-blue-600 bg-clip-text text-transparent;
+}
+
+.hero-overlay {
+  @apply absolute inset-0 bg-gradient-to-r from-black/70 to-black/50;
+}
+
+.section-overlay {
+  @apply absolute inset-0 bg-gradient-to-br from-red-900/80 to-blue-900/80;
+}

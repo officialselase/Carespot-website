@@ -6,8 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "vite build --mode analyze",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "performance:audit": "lighthouse http://localhost:4173 --output=html --output-path=./performance-report.html",
+    "performance:ci": "lighthouse http://localhost:4173 --output=json --output-path=./lighthouse-results.json --chrome-flags='--headless'"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
@@ -16,14 +21,28 @@
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {
+    "@chromatic-com/storybook": "^4.1.1",
     "@eslint/js": "^9.29.0",
+    "@storybook/addon-a11y": "^9.1.15",
+    "@storybook/addon-docs": "^9.1.15",
+    "@storybook/addon-onboarding": "^9.1.15",
+    "@storybook/addon-vitest": "^9.1.15",
+    "@storybook/react-vite": "^9.1.15",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.5.2",
+    "@vitest/browser-playwright": "^4.0.3",
+    "@vitest/coverage-v8": "^4.0.3",
     "eslint": "^9.29.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
+    "eslint-plugin-storybook": "^9.1.15",
     "globals": "^16.2.0",
-    "vite": "^6.0.0"
+    "playwright": "^1.56.1",
+    "prop-types": "^15.8.1",
+    "storybook": "^9.1.15",
+    "terser": "^5.44.0",
+    "vite": "^6.0.0",
+    "vitest": "^4.0.3"
   }
 }

@@ -1,0 +1,65 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:app_list' app_label='authentication' %}">Authentication</a>
+    &rsaquo; <a href="{% url 'admin:authentication_customuser_changelist' %}">Users</a>
+    &rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="module">
+    <h1>{{ title }}</h1>
+    
+    <div class="form-row">
+        <p>You are about to change the role for the following {{ users|length }} user{{ users|length|pluralize }}:</p>
+        
+        <div style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 10px; margin: 10px 0;">
+            <ul>
+                {% for user in users %}
+                <li>{{ user.email }} ({{ user.get_role_display }})</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="user_ids" value="{{ user_ids }}">
+        
+        <div class="form-row">
+            <div>
+                <label for="id_new_role">New Role:</label>
+                <select name="new_role" id="id_new_role" required>
+                    <option value="">Select a role...</option>
+                    {% for role_code, role_name in role_choices %}
+                    <option value="{{ role_code }}">{{ role_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="submit-row">
+            <input type="submit" value="Change Role" class="default" />
+            <a href="{% url 'admin:authentication_customuser_changelist' %}" class="button cancel-link">Cancel</a>
+        </div>
+    </form>
+    
+    <div class="help">
+        <h3>Role Permissions:</h3>
+        <ul>
+            <li><strong>Admin:</strong> Full system access, user management, all permissions</li>
+            <li><strong>Staff:</strong> Content management, limited user management, reports</li>
+            <li><strong>Volunteer:</strong> Content viewing, profile management, volunteer activities</li>
+            <li><strong>Donor:</strong> Content viewing, donation management, profile management</li>
+            <li><strong>Public:</strong> Content viewing only</li>
+        </ul>
+        <p><a href="{% url 'admin:role_permissions' %}">View detailed permissions matrix</a></p>
+    </div>
+</div>
+{% endblock %}

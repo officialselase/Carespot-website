@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareSpot - You're Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .offline-container {
+            max-width: 500px;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .offline-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .retry-btn {
+            background: white;
+            color: #10b981;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .cached-content {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .cached-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .cached-link {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .cached-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ef4444;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .online .status-indicator {
+            background: #10b981;
+            animation: none;
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            .offline-container { padding: 30px 20px; }
+            .cached-links { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">
+            📡
+        </div>
+        
+        <h1>You're Offline</h1>
+        
+        <p>
+            <span class="status-indicator"></span>
+            <span id="connection-status">No internet connection detected</span>
+        </p>
+        
+        <p>
+            Don't worry! You can still browse some of our content that's been saved for offline viewing.
+        </p>
+        
+        <button class="retry-btn" onclick="checkConnection()">
+            Try Again
+        </button>
+        
+        <button class="retry-btn" onclick="goHome()">
+            Go to Homepage
+        </button>
+        
+        <div class="cached-content">
+            <h3>Available Offline Content</h3>
+            <div class="cached-links">
+                <a href="/" class="cached-link">Homepage</a>
+                <a href="/about" class="cached-link">About Us</a>
+                <a href="/projects" class="cached-link">Our Projects</a>
+                <a href="/contact" class="cached-link">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check online status
+        function updateConnectionStatus() {
+            const statusIndicator = document.querySelector('.status-indicator');
+            const statusText = document.getElementById('connection-status');
+            const body = document.body;
+            
+            if (navigator.onLine) {
+                statusText.textContent = 'Connection restored!';
+                body.classList.add('online');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                statusText.textContent = 'No internet connection detected';
+                body.classList.remove('online');
+            }
+        }
+
+        function checkConnection() {
+            if (navigator.onLine) {
+                window.location.reload();
+            } else {
+                // Try to fetch a small resource to test connectivity
+                fetch('/manifest.json', { 
+                    method: 'HEAD',
+                    cache: 'no-cache'
+                })
+                .then(() => {
+                    window.location.reload();
+                })
+                .catch(() => {
+                    alert('Still no connection. Please check your internet and try again.');
+                });
+            }
+        }
+
+        function goHome() {
+            window.location.href = '/';
+        }
+
+        // Listen for online/offline events
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Initial status check
+        updateConnectionStatus();
+
+        // Periodic connection check
+        setInterval(() => {
+            if (!navigator.onLine) {
+                fetch('/manifest.json', { 
+                    method: 'HEAD',
+                    cache: 'no-cache',
+                    signal: AbortSignal.timeout(5000)
+                })
+                .then(() => {
+                    if (!navigator.onLine) {
+                        // Connection is back but navigator.onLine hasn't updated
+                        window.location.reload();
+                    }
+                })
+                .catch(() => {
+                    // Still offline
+                });
+            }
+        }, 30000); // Check every 30 seconds
+    </script>
+</body>
+</html>

@@ -1,12 +1,33 @@
 // src/App.jsx
 
-import React, { useState } from "react";
-import Menu from "./components/Menu.jsx"; // Ensure .jsx extension
-import HomePage from "./pages/HomePage.jsx"; // Ensure .jsx extension and correct casing
-import AboutPage from "./pages/AboutPage.jsx"; // Ensure .jsx extension and correct casing
-import ProjectsPage from "./pages/ProjectsPage.jsx"; // Ensure .jsx extension and correct casing
-import CareSpotGhanaPage from "./pages/CareSpotGhanaPage.jsx"; // Ensure .jsx extension and correct casing
-import ContactPage from "./pages/ContactPage.jsx"; // Ensure .jsx extension and correct casing
+import { useState, Suspense } from "react";
+import Menu from "./components/Menu.jsx";
+
+// Lazy load all page components for better performance
+import {
+  LazyHomePage,
+  LazyAboutPage,
+  LazyProjectsPage,
+  LazyContactPage,
+  LazyVolunteerPage,
+  LazyVolunteerHubPage,
+  LazyDonationPage,
+  LazyRxCarePage,
+  LazyCommunityPage,
+  LazyCareSpotGhanaPage,
+  LazyColorShowcase,
+  LazyTypographyTestPage,
+  LazyInteractiveShowcase,
+  LazyNavigationDemoPage,
+  LazyTouchDemoPage,
+  PageLoadingSkeleton
+} from "./utils/lazyLoader.jsx";
+import { ToastProvider } from "./components/atoms/Toast/ToastContainer.jsx";
+import PWAInstallPrompt from "./components/PWAInstallPrompt.jsx";
+import OfflineIndicator from "./components/OfflineIndicator.jsx";
+import PerformanceDashboard from "./components/PerformanceDashboard.jsx";
+// Initialize theme manager
+import "./utils/themeManager.js";
 
 const App = () => {
   // State to manage the current active page
@@ -19,191 +40,244 @@ const App = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Render the current page based on currentPage state
+  // Render the current page based on currentPage state with lazy loading
   const renderPage = () => {
+    const pageProps = { navigateTo };
+
     switch (currentPage) {
       case "Home":
-        return <HomePage navigateTo={navigateTo} />;
+        return <LazyHomePage {...pageProps} />;
       case "About":
-        return <AboutPage />;
+        return <LazyAboutPage {...pageProps} />;
       case "CareSpotGhana":
-        return <CareSpotGhanaPage />; // Render the dedicated CareSpotGhanaPage
+        return <LazyCareSpotGhanaPage {...pageProps} />;
       case "Projects":
-        return <ProjectsPage />;
-      case "Contact":
-        return <ContactPage />; // Render the dedicated ContactPage
+        return <LazyProjectsPage {...pageProps} />;
+      case "Volunteer":
+        return <LazyVolunteerPage {...pageProps} />;
+      case "VolunteerHub":
+        return <LazyVolunteerHubPage {...pageProps} />;
       case "Donate":
-        // Donate page with a consistent hero section
-        return (
-          <div className="min-h-screen pt-20 flex flex-col bg-gray-50">
-            {/* Hero Section for Donate Page */}
-            <section
-              className="relative py-24 bg-cover bg-center text-white flex items-center justify-center"
-              style={{
-                backgroundImage: "url('/sedi.jpeg')", // Consistent image
-              }}
-            >
-              <div className="absolute inset-0 bg-rose-900 opacity-70 z-0"></div>{" "}
-              {/* Dark rose overlay */}
-              <div className="relative z-10 text-center px-4">
-                <h1 className="text-4xl md:text-5xl font-extrabold mb-4">
-                  Support Our Cause
-                </h1>
-                <p className="text-lg md:text-xl max-w-2xl mx-auto">
-                  Your generous contribution helps us continue our vital work in
-                  empowering children and transforming communities.
-                </p>
-              </div>
-            </section>
-
-            {/* Main Content Area for Donate */}
-            <div className="container mx-auto px-4 py-16 text-center">
-              <div className="p-8 bg-white shadow-lg rounded-lg max-w-3xl mx-auto">
-                <p className="text-xl text-gray-700 mb-10">
-                  Every donation, big or small, makes a significant difference.
-                </p>
-                <button className="bg-rose-600 text-white px-10 py-5 rounded-full text-2xl font-bold hover:bg-rose-700 transition-colors duration-300 shadow-xl transform hover:scale-105">
-                  Donate Now
-                </button>
-                {/* Add more donation form/details here */}
-              </div>
-            </div>
-          </div>
-        );
+        return <LazyDonationPage {...pageProps} />;
+      case "RxCare":
+        return <LazyRxCarePage {...pageProps} />;
+      case "Community":
+        return <LazyCommunityPage {...pageProps} />;
+      case "Contact":
+        return <LazyContactPage {...pageProps} />;
+      case "ColorShowcase":
+        return <LazyColorShowcase />;
+      case "TypographyTest":
+        return <LazyTypographyTestPage />;
+      case "InteractiveShowcase":
+        return <LazyInteractiveShowcase />;
+      case "NavigationDemo":
+        return <LazyNavigationDemoPage />;
+      case "TouchDemo":
+        return <LazyTouchDemoPage {...pageProps} />;
       default:
-        return <HomePage navigateTo={navigateTo} />; // Fallback to Home
+        return <LazyHomePage {...pageProps} />;
     }
   };
 
   return (
-    <div className="font-sans antialiased text-gray-800 bg-gray-50">
-      {/* Menu Component */}
-      <Menu navigateTo={navigateTo} />
+    <ToastProvider position="top-right">
+      <div className="min-h-screen bg-color-bg-primary">
+        {/* Offline Indicator */}
+        <OfflineIndicator />
 
-      {/* Render the current active page */}
-      {renderPage()}
+        {/* Menu Component */}
+        <Menu navigateTo={navigateTo} />
 
-      {/* Footer (remains in App.jsx as it's common to all pages) */}
-      <footer className="bg-white text-gray-800 py-12">
-        <div className="container mx-auto px-4 grid md:grid-cols-4 gap-8">
-          {/* About/Logo Section */}
-          <div>
-            <div className="flex items-center mb-4">
-              <img
-                src="/Carespot logo - IG -.jpg"
-                alt="Carespot Logo"
-                className="h-12 mr-3 rounded-full"
-              />
-              <span className="text-2xl font-bold text-blue-600">CareSpot</span>
+        {/* PWA Install Prompt */}
+        <PWAInstallPrompt />
+
+        {/* Performance Dashboard (only in development) */}
+        <PerformanceDashboard isVisible={import.meta.env.DEV} />
+
+        {/* Render the current active page with Suspense for lazy loading */}
+        <main id="main-content" tabIndex="-1">
+          <Suspense fallback={<PageLoadingSkeleton />}>
+            {renderPage()}
+          </Suspense>
+        </main>
+
+        {/* Footer (remains in App.jsx as it's common to all pages) */}
+        <footer className="bg-color-bg-inverse text-color-text-inverse py-16">
+          <div className="container-custom grid md:grid-cols-4 gap-8">
+            {/* About/Logo Section */}
+            <div>
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-red-600 to-blue-600 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-white font-bold text-lg">CS</span>
+                </div>
+                <span className="text-2xl font-bold text-white">CareSpot</span>
+              </div>
+              <p className="text-red-200 font-semibold mb-6 text-lg">
+                Compassion In Action
+              </p>
+              <p className="text-color-text-inverse mb-6 leading-relaxed opacity-80">
+                Transforming lives through healthcare access, education, and community empowerment across Ghana and beyond.
+              </p>
+              <div className="flex space-x-4">
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300"
+                >
+                  <i className="fab fa-linkedin text-lg"></i>
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300"
+                >
+                  <i className="fab fa-instagram text-lg"></i>
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300"
+                >
+                  <i className="fab fa-tiktok text-lg"></i>
+                </a>
+                <a
+                  href="#"
+                  className="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-300"
+                >
+                  <i className="fab fa-facebook-f text-lg"></i>
+                </a>
+              </div>
             </div>
-            <p className="text-gray-600 font-bold mb-4">
-              Compassion In Action...
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-xl font-bold text-color-text-inverse mb-6">Quick Links</h3>
+              <ul className="space-y-3">
+                <li>
+                  <button
+                    onClick={() => navigateTo("Home")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Home
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("About")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Who We Are
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("CareSpotGhana")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    CareSpot – Ghana
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("Projects")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Projects
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("Volunteer")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Volunteer
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("Community")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Community
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("Contact")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Contact Us
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => navigateTo("Donate")}
+                    className="text-gray-300 hover:text-red-400 transition-colors duration-300 text-left"
+                  >
+                    Donate
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h3 className="text-xl font-bold text-color-text-inverse mb-6">Get in Touch</h3>
+              <ul className="space-y-3 text-color-text-inverse opacity-80">
+                <li className="flex items-start">
+                  <i className="fas fa-map-marker-alt text-red-400 mt-1 mr-3"></i>
+                  <span>Oak Villa Estate, House number 41<br />Abokobi-Accra, Ghana</span>
+                </li>
+                <li className="flex items-center">
+                  <i className="fas fa-phone text-red-400 mr-3"></i>
+                  <span>+1 (814) 417-1575</span>
+                </li>
+                <li className="flex items-center">
+                  <i className="fas fa-phone text-red-400 mr-3"></i>
+                  <span>+233 53 457 5833</span>
+                </li>
+                <li className="flex items-center">
+                  <i className="fas fa-envelope text-red-400 mr-3"></i>
+                  <span>carespotinitiative@gmail.com</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Newsletter Signup */}
+            <div>
+              <h3 className="text-xl font-bold text-color-text-inverse mb-6">Stay Updated</h3>
+              <p className="text-color-text-inverse opacity-80 mb-4">Subscribe to our newsletter for updates on our impact and programs.</p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="flex-1 px-4 py-3 rounded-lg bg-gray-800 text-white border border-gray-700 focus:border-red-500 focus:outline-none"
+                />
+                <button
+                  onClick={() => navigateTo("Community")}
+                  className="btn-primary whitespace-nowrap"
+                >
+                  Subscribe
+                </button>
+              </div>
+              <p className="text-xs text-gray-400 mt-2">
+                <button
+                  onClick={() => navigateTo("Community")}
+                  className="underline hover:text-red-400 transition-colors"
+                >
+                  Advanced subscription options
+                </button>
+              </p>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 mt-12 pt-8 text-center">
+            <p className="text-gray-400">
+              &copy; {new Date().getFullYear()} CareSpot Initiative. All rights reserved. |
+              <span className="text-red-400"> Compassion in Action</span>
             </p>
-            <div className="flex space-x-4 mt-6">
-              <a
-                href="#"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-              >
-                <i className="fab fa-linkedin text-xl"></i>
-              </a>
-              <a
-                href="#"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-              >
-                <i className="fab fa-instagram text-xl"></i>
-              </a>
-              <a
-                href="#"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-              >
-                <i className="fab fa-tiktok text-xl"></i>
-              </a>
-              <a
-                href="#"
-                className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-              >
-                <i className="fab fa-facebook-f text-xl"></i>
-              </a>
-            </div>
           </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4">Quick link</h3>
-            <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => navigateTo("Home")}
-                  className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-                >
-                  Home
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigateTo("About")}
-                  className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-                >
-                  Who We Are
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigateTo("CareSpotGhana")}
-                  className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-                >
-                  CareSpot – Ghana
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigateTo("Projects")}
-                  className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-                >
-                  Projects
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigateTo("Contact")}
-                  className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-                >
-                  Contact Us
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => navigateTo("Donate")}
-                  className="text-gray-600 hover:text-blue-600 transition-colors duration-300"
-                >
-                  Donate
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-xl font-bold text-gray-800 mb-4">
-              Get in touch
-            </h3>
-            <ul className="space-y-2 text-gray-600">
-              <li>Oak Villa Estate, House number 41</li>
-              <li>Abokobi-Accra, Ghana</li>
-              <li>+1 (814) 417-1575</li>
-              <li>+233 53 457 5833</li>
-              <li>carespotinitiative@gmail.com</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-500">
-          <p>
-            &copy; {new Date().getFullYear()} CareSpot. All rights reserved.
-          </p>
-        </div>
-      </footer>
-    </div>
+        </footer>
+      </div>
+    </ToastProvider>
   );
 };
 

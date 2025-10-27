@@ -1,0 +1,41 @@
+{
+  "name": "CareSpot - Community Health Initiative",
+  "short_name": "CareSpot",
+  "description": "A community-driven health initiative focused on improving healthcare access, promoting health literacy, and supporting nutrition for underserved populations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#10b981",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["health", "medical", "nonprofit"],
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/carespot-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Donate Now",
+      "short_name": "Donate",
+      "description": "Make a donation to support our cause",
+      "url": "/donation"
+    },
+    {
+      "name": "Volunteer",
+      "short_name": "Volunteer",
+      "description": "Join our volunteer program",
+      "url": "/volunteer"
+    }
+  ]
+}

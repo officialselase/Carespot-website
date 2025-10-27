@@ -1,0 +1,5 @@
+WARNING 2025-10-26 19:12:26,716 log 22580 17344 Bad Request: /api/auth/login/
+WARNING 2025-10-26 19:12:28,925 log 22580 17344 Bad Request: /api/auth/register/
+WARNING 2025-10-26 19:13:39,197 log 32116 26456 Forbidden: /api/auth/api/users/5c5f6cb6-b71c-490a-ba7c-b56d26e0b7d4/change-role/
+WARNING 2025-10-26 19:13:40,499 log 32116 26456 Forbidden: /api/auth/api/role-permissions/
+WARNING 2025-10-26 19:13:41,737 log 32116 26456 Forbidden: /api/auth/api/users/
