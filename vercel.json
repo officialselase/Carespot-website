@@ -3,25 +3,10 @@
   "buildCommand": "cd Carespot-frontend && npm install && npm run build",
   "outputDirectory": "Carespot-frontend/dist",
   "installCommand": "cd Carespot-frontend && npm install",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/sw.js",
-      "dest": "/sw.js",
-      "headers": {
-        "Service-Worker-Allowed": "/"
-      }
-    },
-    {
-      "src": "/manifest.json",
-      "dest": "/manifest.json"
-    },
-    {
-      "src": "/offline.html",
-      "dest": "/offline.html"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api/).*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
